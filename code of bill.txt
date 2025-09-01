@@ -1,0 +1,712 @@
+from tkinter import *
+from tkinter import ttk
+from PIL import Image,ImageTk  # pip install pillow
+import random 
+import os
+from tkinter import messagebox
+import tempfile
+import subprocess
+# class LoginPage:
+#     def __init__(self, root):
+#         self.root = root
+#         self.root.title("Login")
+#         self.root.geometry("400x300")
+#         self.root.configure(bg="lightgreen")
+
+#         self.username_label = Label(root, text="Username", font=("Arial", 12, "bold"), bg="lightblue", fg="black")
+#         self.username_label.pack(pady=10)
+#         self.username_entry = Entry(root, font=("Arial", 12))
+#         self.username_entry.pack(pady=5)
+
+#         self.password_label = Label(root, text="Password", font=("Arial", 12, "bold"), bg="lightblue")
+#         self.password_label.pack(pady=10)
+#         self.password_entry = Entry(root, show='*', font=("Arial", 12))
+#         self.password_entry.pack(pady=5)
+
+#         self.login_button = Button(root, text="Login", font=("Arial", 12, "bold"), bg="green", fg="white",
+#                                    command=self.verify_login)
+#         self.login_button.pack(pady=20)
+
+#     def verify_login(self):
+#         username = self.username_entry.get()
+#         password = self.password_entry.get()
+#         if username == "Divyanshusahu" and password == "123456789":
+#             self.root.destroy()
+#             new_root = Tk()
+#             obj = Bill_App(new_root)
+#             new_root.mainloop()
+#         else:
+#             from tkinter import messagebox
+#             messagebox.showerror("Error", "Invalid Username or Password")
+
+
+class Bill_App:
+    
+    def __init__(self, root):
+        self.root=root
+        self.root.geometry("1530x800+0+0")
+        self.root.title("Billing Software")
+        #===========variables==============
+        
+        self.C_Name=StringVar()
+        self.C_phon=StringVar()
+        self.bill_no=StringVar()
+        z=random.randint(1000,9999)
+        self.bill_no.set(z)
+        self.C_email=StringVar()
+        self.search_bill=StringVar()
+        self.product=StringVar()
+        self.prices=IntVar()
+        self.qty=IntVar()
+        self.sub_total=StringVar()
+        self.tax_input=StringVar()
+        self.total=StringVar()
+
+
+
+        #product categories list
+        self.Category=("Select option","Clothing","Lifestyle","Mobiles")
+        #clothing
+        self.SubCatClothing=["pant","T-Shirt","Shirt","Jacket"]
+        self.pant=["leviss","Mufti","spyker"]
+        self.price_leviss=1100
+        self.price_Mufti=1000
+        self.price_spyker=1500
+
+        self.TShirt=["levis","tommy","polo"]
+        self.price_levis=400
+        self.price_tommy=800
+        self.price_polo=1200
+
+        self.Shirt=["peter","loius","arrow"]
+        self.price_peter=1200
+        self.price_loius=1800
+        self.price_arrow=2000
+
+        self.Jacket=["wildcraft","nike","woodland"]
+        self.price_wildcraft=2000
+        self.price_nike=3000
+        self.price_woodland=5000
+
+        #lifestyle
+
+        self.SubCatLifestyle=["Bath Soap","Face Cream","Hair Oil","Conditionar"]
+        self.Bathsoap=["lux","dove","pears"]
+        self.price_lux=20
+        self.price_dove=40
+        self.price_pears=50
+
+        self.FaceCream=["ponds","nivya","himalya"]
+        self.price_ponds=300
+        self.price_nivya=400
+        self.price_himalya=150
+
+        self.HairOil=["parashut","indulekha","dabarambla"]
+        self.price_parashut=60
+        self.price_indulekha=90
+        self.price_dabarambla=40
+
+        self.Conditionar=["Tresemme","dove","pears"]
+        self.price_Tresemme=20
+        self.price_dove=30
+        self.price_pears=50
+
+        #mobiles
+
+        self.SubCatMobiles=["Iphone","Samsung","Moto","Realme"]
+        self.Iphone=["Iphone_x","Iphone_11","Iphone_12"]
+        self.price_Iphone_x=28000
+        self.price_Iphone_11=40000
+        self.price_Iphone_12=50000
+
+        self.samsung=["samsung 16","samsung 12","samsung 21"]
+        self.price_samsung16=16000
+        self.price_samsung12=12000
+        self.price_samsung21=9500
+
+        self.Motorola=["Moto G Power", "Moto Edge 40", "Moto G60", "Moto E13"]
+        self.price_MotoGpower=22000
+        self.price_MotoEdge40=20000
+        self.price_MotoG60=18000
+        self.price_MotoE13=16000
+
+        self.Realme=["Realme 12","Realme 13","Realme pro"]
+        self.price_Realme12=11000
+        self.price_Realme13=13000
+        self.price_Realmepro=15000
+
+
+        
+       #image1
+        img = Image.open("image/kirana1.jpeg")  
+        img = img.resize((600, 130), Image.Resampling.LANCZOS)
+        self.photoimg = ImageTk.PhotoImage(img)
+
+        lbl_img = Label(self.root, image=self.photoimg)
+        lbl_img.place(x=0, y=0, width=600, height=130)
+
+        #image2
+        img_1 = Image.open("image/kirana2.jpeg")
+        img_1= img_1.resize((500, 130), Image.Resampling.LANCZOS)
+        self.photoimg_1= ImageTk.PhotoImage(img_1)
+
+        lbl_img_1 = Label(self.root, image=self.photoimg_1)
+        lbl_img_1.place(x=600, y=0, width=600, height=130)
+        
+        
+        #image3 
+        img_2= Image.open("image/kiranaimage4.jpg")
+        img_2= img_2.resize((500, 130), Image.Resampling.LANCZOS)
+        self.photoimg_2 = ImageTk.PhotoImage(img_2)
+    
+        lbl_img_2 = Label(self.root, image=self.photoimg_2)
+        lbl_img_2.place(x=1030, y=0, width=500, height=130)
+
+        lbl_title=Label(self.root,text="BILLING SOFTWARE DEVL. DS",font=("times new roman",35,"bold"),bg="silver",fg="#000080")
+        lbl_img_1.place(x=600, y=0, width=480, height=130)
+        lbl_title.place( x=0,y=130,width=1530,height=45  )
+        
+        Main_Frame=Frame(self.root,bd=5,relief=GROOVE,bg="#68CAF0")
+        Main_Frame.place(x=0,y=175,width=1530,height=620)
+
+     
+        #customer lable frame 
+        Cust_Frame = LabelFrame(Main_Frame, text="Customer", font=("Times New Roman", 14, "bold"), bg="white", fg="red")
+        Cust_Frame.place(x=10, y=5, width=350, height=130)
+
+        self.lbl_mob = Label(Cust_Frame, text="Mobile No.", font=("Times New Roman", 12, "bold"), bg="white")
+        self.lbl_mob.grid(row=0, column=0, sticky="W", padx=5, pady=2)
+
+        self.entry_Phon = ttk.Entry(Cust_Frame,textvariable=self.C_phon, font=("Times New Roman", 10, "bold"), width=24)
+        self.entry_Phon.grid(row=0, column=1)
+
+        self.lbl_CustName = Label(Cust_Frame, text="Customer Name", font=("Arial", 12, "bold"), bg="white", bd=4)
+        self.lbl_CustName.grid(row=1, column=0, sticky="w", padx=5, pady=2)
+
+        self.txtCustName = ttk.Entry(Cust_Frame,textvariable=self.C_Name, font=("Arial", 10, "bold"), width=24)
+        self.txtCustName.grid(row=1, column=1, sticky="w", padx=5, pady=2)
+
+        self.lblEmail = Label(Cust_Frame, text="Email", font=("Arial", 12, "bold"), bg="white", bd=4)
+        self.lblEmail.grid(row=2, column=0, sticky="w", padx=5, pady=2)
+
+        self.txtEmail = ttk.Entry(Cust_Frame, textvariable=self.C_email,font=("Arial", 10, "bold"), width=24)
+        self.txtEmail.grid(row=2, column=1, sticky="W", padx=5, pady=2)
+
+       #PRODUCT label frame    
+        Product_Frame = LabelFrame(Main_Frame, text="Product", font=("times New Roman", 14, "bold"), bg="white", fg="red")
+        Product_Frame.place(x=370, y=5, width=600, height=130)
+
+
+       #category
+        self.lblCategory = Label(Product_Frame, text="Select Categories", font=("Arial", 10, "bold"), bg="white", bd=4)
+        self.lblCategory.grid(row=0, column=0, sticky="W", padx=5, pady=2)
+
+        
+        self.combo_category = ttk.Combobox(Product_Frame,value=self.Category ,font=('arial', 10, 'bold'), width=24,state="readonly")
+        self.combo_category.current(0)
+        self.combo_category.grid(row=0, column=1, sticky=W, padx=5, pady=2)
+        self.combo_category.bind("<<ComboboxSelected>>", self.Categories)
+
+
+       #subcategory
+
+        self.lblSubCategory=Label(Product_Frame,font=('arial',10,'bold'),bg="white",text="SubCategory",bd=4)
+        self.lblSubCategory.grid(row=1,column=0,sticky=W,padx=5,pady=2)
+
+        self.ComboSubCategory=ttk.Combobox(Product_Frame,values=[""],state="readonly",font=('arial',10,'bold'),width=24)
+        self.ComboSubCategory.grid(row=1,column=1,padx=5,pady=2)
+        self.ComboSubCategory.bind("<<ComboboxSelected>>", self.Product_add)
+
+       #product name 
+        self.lblProduct = Label(Product_Frame, text="Product Name", font=("Arial", 10, "bold"), bg="white", bd=4)
+        self.lblProduct.grid(row=2, column=0, sticky="W", padx=5, pady=2)
+
+        self.comboProduct = ttk.Combobox(Product_Frame,textvariable=self.product, font=('arial', 10, 'bold'), width=24,state="readonly")
+        self.comboProduct.grid(row=2, column=1, sticky=W, padx=5, pady=2)
+        self.comboProduct.bind("<<ComboboxSelected>>",self.price)
+
+        #price
+        self.lblPrice = Label(Product_Frame, text="Price", font=("Arial", 10, "bold"), bg="white", bd=4)
+        self.lblPrice.grid(row=0, column=2, sticky="W", padx=5, pady=2)
+
+        self.comboPrice = ttk.Combobox(Product_Frame,textvariable=self.prices, font=('arial', 10, 'bold'), width=24,state="readonly")
+        self.comboPrice.grid(row=0, column=3, sticky=W, padx=5, pady=2)
+   
+        
+        #qty
+        self.lblQty = Label(Product_Frame, text="Qty", font=("Arial", 10, "bold"), bg="white", bd=4)
+        self.lblQty.grid(row=1, column=2, sticky="W", padx=5, pady=2)
+
+        self.comboQty = ttk.Entry(Product_Frame,textvariable=self.qty, font=('arial', 10, 'bold'), width=26)
+        self.comboQty.grid(row=1, column=3, sticky=W, padx=5, pady=2)
+     
+        
+        #middle frame
+        MiddleFrame=Frame(Main_Frame,bd=10,bg="#4D344C")
+        MiddleFrame.place(x=10,y=150,width=960,height=320)
+
+        
+        img_3 = Image.open("image/kirana7.jpg")
+        img_3 = img_3.resize((940, 300), Image.Resampling.LANCZOS)
+        self.photoimg_3 = ImageTk.PhotoImage(img_3)
+
+        lbl_img_3 = Label(MiddleFrame, image=self.photoimg_3)
+        lbl_img_3.place(x=0, y=0, width=940, height=300)  # Adjust y based on layout
+
+        
+
+        #search
+        Search_Frame = Frame(Main_Frame, bd=2, bg="white")
+        Search_Frame.place(x=1000, y=10 ,width=500,height=35)
+
+        
+        self.lblBill= Label(Search_Frame, font=("Arial", 12, "bold"), bg="#F09D9D",text="Bill Number",fg="black" )
+        self.lblBill.grid(row=0, column=0, sticky="W",  pady=1)
+
+        
+        self.txt_Entry_Search = ttk.Entry(Search_Frame,textvariable=self.search_bill, font=('arial', 12, 'bold'), width=26)
+        self.txt_Entry_Search.grid(row=0, column=1, sticky=W, padx=2, pady=2)
+
+        self.BtnSearch = Button(Search_Frame,command=self.find_bill, text="Search", font=("arial", 8, "bold"), bg="#5BED5B", fg="black",width=20,cursor="hand2")
+        self.BtnSearch.grid(row=0, column=2)
+
+
+        #RightFrame Bill Aria
+
+        
+        RightLabelFrame=LabelFrame(Main_Frame,text="Bill Aria",font=("times new roman",12,"bold"),bg="white",fg="red")
+        RightLabelFrame.place(x=1000, y=50, width=500, height=480)
+
+        scroll_y = Scrollbar(RightLabelFrame, orient=VERTICAL)
+        self.textarea = Text(RightLabelFrame, yscrollcommand=scroll_y.set, bg="white", fg="blue", font=("times new roman", 12, "bold"))
+        scroll_y.pack(side=RIGHT, fill=Y)
+        scroll_y.config(command=self.textarea.yview)
+
+        self.textarea.pack(fill=BOTH, expand=1)
+
+
+
+       #Bill counter label frame  label frame    
+        Bottom_Frame = LabelFrame(Main_Frame, text="Bill Counter", font=("times New Roman", 12, "bold"), bg="#C4A484",fg="#000080" )
+        Bottom_Frame.place(x=0, y=485, width=1520, height=125)
+
+        
+        self.lblSubTotal= Label(Bottom_Frame, font=("Arial", 12, "bold"), bg="#808080",text="Sub Total" ,bd=4)
+        self.lblSubTotal.grid(row=0, column=0, sticky="W", padx=5, pady=2)
+
+        self.EntySubTotal = ttk.Entry(Bottom_Frame, font=('arial', 10, 'bold'), width=26)
+        self.EntySubTotal.grid(row=0, column=1, sticky=W, padx=5, pady=2)
+
+        self.lbl_tax= Label(Bottom_Frame, font=("Arial", 12, "bold"), bg="#808080",text="Gov Tax" ,bd=4)
+        self.lbl_tax.grid(row=1, column=0, sticky="W", padx=5, pady=2)
+
+        self.txt_tax = ttk.Entry(Bottom_Frame, font=('arial', 10, 'bold'), width=26)
+        self.txt_tax.grid(row=1, column=1, sticky=W, padx=5, pady=2)
+
+        self.lblAmountTotal= Label(Bottom_Frame, font=("Arial", 12, "bold"), bg="#808080",text="Total" ,bd=4)
+        self.lblAmountTotal.grid(row=2, column=0, sticky="W", padx=5, pady=2)
+
+        self.txtAmountTotal = ttk.Entry(Bottom_Frame, font=('arial', 10, 'bold'), width=26)
+        self.txtAmountTotal.grid(row=2, column=1, sticky=W, padx=5, pady=2)
+
+
+        #button frame
+        Btn_Frame = Frame(Bottom_Frame, bd=2, bg="white")
+        Btn_Frame.place(x=320, y=0)
+
+        self.BtnAddToCart = Button(Btn_Frame,command=self.AddItem,text="Add To Cart", font=("arial", 10, "bold"), bg="#4AF84A", fg="black",width=24,cursor="hand2")
+        self.BtnAddToCart.grid(row=0, column=0)
+
+        self.Btngenerate_Bill = Button(Btn_Frame,command=self.gen_bill, text="Generate Bill", font=("arial", 10, "bold"), bg="#5FF45F", fg="black",width=24,cursor="hand2")
+        self.Btngenerate_Bill.grid(row=0, column=1)
+
+        self.Btnsave = Button(Btn_Frame, command=self.save_bill,text="Save", font=("arial", 10, "bold"), bg="#4DE14D", fg="black",width=24,cursor="hand2")
+        self.Btnsave.grid(row=0, column=2)
+
+        self.BtnPrint = Button(Btn_Frame,command=self.iPrint,text="Print", font=("arial", 10, "bold"), bg="#4CE74C", fg="black",width=24,cursor="hand2")
+        self.BtnPrint.grid(row=0,column=3)
+
+        self.BtnClear = Button(Btn_Frame,command=self.clear, text="Clear", font=("arial", 10, "bold"), bg="#4AE84A", fg="black",width=24,cursor="hand2")
+        self.BtnClear.grid(row=0, column=4)
+
+        self.BtnExit = Button(Btn_Frame,command=self.root.destroy, text="Exit", font=("arial", 10, "bold"), bg="#5BED5B", fg="black",width=24,cursor="hand2")
+        self.BtnExit.grid(row=0, column=5)
+
+        self.welcome()  # Call the welcome method to initialize the bill area
+        
+        self.l=[]
+        #================Function Declaration================
+
+    def welcome(self):
+        self.textarea.delete(1.0, END)
+        self.textarea.insert(END, "\t\tWelcome to DivyaStore")
+        self.textarea.insert(END, f"\nBill Number: {self.bill_no.get()}")
+        self.textarea.insert(END, f"\nCustomer Name: {self.C_Name.get()}")
+        self.textarea.insert(END, f"\nPhone No: {self.C_phon.get()}")
+        self.textarea.insert(END, f"\nCustomer Email: {self.C_email.get()}")
+
+        self.textarea.insert(END, "\n====================================================\n" )
+        self.textarea.insert(END, f"\nProduct\t\t\tQty\t\tPrice")
+        self.textarea.insert(END, "\n====================================================\n" )
+
+
+    def AddItem(self):
+        self.tax = 18  # GST percentage
+        self.n=self.prices.get()  # price of product
+        self.m=self.qty.get()*self.n  # total price for quantity
+        self.l.append(self.m)
+        if self.product.get()=="":
+            messagebox.showerror("Error", "Please Select The Product Name")
+        else: 
+            self.textarea.insert(END, f"\n{self.product.get()}\t\t\t{self.qty.get()}\t\t{self.m}")
+            self.sub_total.set(str('Rs.%.2f'%(sum(self.l))))
+            self.tax_input.set(str('Rs.%.2f'%((((sum(self.l))-(self.prices.get()))*self.tax)/100)))
+            self.total.set(str('Rs.%.2f'%(((sum(self.l))+((((sum(self.l))-(self.prices.get()))*self.tax)/100)))))
+
+            total_sum = sum(self.l)
+            self.sub_total.set('Rs.%.2f' % total_sum)
+
+            # ✅ Apply tax only if subtotal >= 1000
+            if total_sum >= 1000:
+                tax_amount=(total_sum * self.tax)/100
+            else:
+                tax_amount = 0
+
+            self.tax_input.set('Rs.%.2f' % tax_amount)
+            self.total.set('Rs.%.2f' % (total_sum + tax_amount))
+
+            # Update entry fields in GUI
+            self.EntySubTotal.delete(0, END)
+            self.EntySubTotal.insert(END, self.sub_total.get())
+
+            self.txt_tax.delete(0, END)
+            self.txt_tax.insert(END, self.tax_input.get())
+
+            self.txtAmountTotal.delete(0, END)
+            self.txtAmountTotal.insert(END, self.total.get())
+
+        # # Reset fields
+        # self.comboProduct.set("")
+        # self.comboPrice.set("")
+        # self.comboQty.delete(0, END)
+        # self.comboQty.insert(0, 1)
+        # self.combo_category.current(0)
+        # self.ComboSubCategory.set("")
+    
+    def gen_bill(self):
+        if self.product.get()=="":
+            messagebox.showerror("Error", "Please Add To Cart Product")
+        else:
+            text=self.textarea.get(10.0,(10.0+float(len(self.l))))
+            self.welcome()            
+            self.textarea.insert(END, text)
+            self.textarea.insert(END,"\n==================================================\n")   
+            self.textarea.insert(END,f"\nSub Total:\t\t\t\t\t{self.sub_total.get()}")
+            self.textarea.insert(END,f"\nTax:\t\t\t\t\t{self.tax_input.get()}")
+            self.textarea.insert(END,f"\nTotal:\t\t\t\t\t{self.total.get()}")
+            self.textarea.insert(END,"\n==================================================")
+ 
+    def save_bill(self):
+        op=messagebox.askyesno("Save Bill", "Do you want to save the bill?")
+        if op>0:
+            self.bill_data=self.textarea.get(1.0,END)
+            f1=open("bills/"+str(self.bill_no.get())+".txt","w")
+            f1.write(self.bill_data)
+            f1.close()
+            op=messagebox.showinfo("Saved", f"Bill No:{self.bill_no.get()} saved successfully ")
+
+    def iPrint(self):
+        try:
+            import tempfile
+            import os
+            from tkinter import messagebox
+
+            q = self.textarea.get(1.0, "end-1c")
+
+            temp_file = tempfile.mktemp(suffix=".txt")
+
+            with open(temp_file, "w", encoding="utf-8") as f:
+                f.write(q)
+
+            os.system(f'notepad /p "{temp_file}"')
+
+        except Exception as e:
+            messagebox.showerror("Print Error", f"Unable to print.\nError: {e}")
+
+    
+    def find_bill(self):
+        found="no"
+        for i in os.listdir("bills/"):
+            if i.split('.')[0]==self.search_bill.get():
+                f1=open(f"bills/{i}","r")
+                self.textarea.delete(1.0,END)
+                for d in f1:
+                    self.textarea.insert(END,d)
+                f1.close()
+                found="yes"
+        if found=="no":
+                messagebox.showerror("Error", "Bill Not Found, Please Check Bill No.")
+
+    def clear(self):
+        self.textarea.delete(1.0, END)
+        self.C_Name.set("")
+        self.C_phon.set("")
+        self.C_email.set("")
+        x=random.randint(1000, 9999)
+        self.bill_no.set(str(x))
+        self.search_bill.set("")
+        self.product.set("")
+        self.prices.set(0)
+        self.qty.set(0)
+        self.sub_total.set("")
+        self.tax_input.set("")
+        self.total.set("")
+        
+    
+        self.comboProduct.set("")
+        
+        self.l=[0]
+        self.welcome()
+
+
+    
+       
+
+            
+    
+    def Categories(self, event=""):
+       selected_category = self.combo_category.get()
+       if selected_category == "Clothing":
+        self.ComboSubCategory.config(values=self.SubCatClothing)
+        self.ComboSubCategory.current(0)
+       elif selected_category == "Lifestyle":
+        self.ComboSubCategory.config(values=self.SubCatLifestyle)
+        self.ComboSubCategory.current(0)
+       elif selected_category == "Mobiles":
+        self.ComboSubCategory.config(values=self.SubCatMobiles)
+        self.ComboSubCategory.current(0)
+
+
+    def Product_add(self, event=""):
+        subcategory = self.ComboSubCategory.get()
+
+        if subcategory == "pant":
+            self.comboProduct.config(values=self.pant)
+            self.comboProduct.current(0)
+
+        elif subcategory == "T-Shirt":
+            self.comboProduct.config(values=self.TShirt)
+            self.comboProduct.current(0)
+
+        elif subcategory == "Shirt":
+            self.comboProduct.config(values=self.Shirt)
+            self.comboProduct.current(0)
+
+        elif subcategory == "Jacket":
+            self.comboProduct.config(values=self.Jacket)
+            self.comboProduct.current(0)
+
+        elif subcategory == "Bath Soap":
+            self.comboProduct.config(values=self.Bathsoap)
+            self.comboProduct.current(0)
+
+        elif subcategory == "Face Cream":
+            self.comboProduct.config(values=self.FaceCream)
+            self.comboProduct.current(0)
+
+        elif subcategory == "Hair Oil":
+            self.comboProduct.config(values=self.HairOil)
+            self.comboProduct.current(0)
+
+        elif subcategory == "Conditionar":
+            self.comboProduct.config(values=self.Conditionar)
+            self.comboProduct.current(0)
+
+        elif subcategory == "Iphone":
+            self.comboProduct.config(values=self.Iphone)
+            self.comboProduct.current(0)
+
+        elif subcategory == "Samsung":
+            self.comboProduct.config(values=self.samsung)
+            self.comboProduct.current(0)
+        
+        elif subcategory == "Moto":
+            self.comboProduct.config(values=self.Motorola)
+            self.comboProduct.current(0)
+
+
+        elif subcategory == "Realme":
+            self.comboProduct.config(values=self.Realme)
+            self.comboProduct.current(0)
+
+    def price(self, event=""):
+            product = self.comboProduct.get()  # Make sure comboProduct is your product combobox
+            self.qty.set(1)  # Set default quantity 
+        
+        #pant
+            if product == "leviss":
+                self.comboPrice.config(values=self.price_leviss)
+                self.comboPrice.current(0)
+
+            elif product == "Mufti":
+                self.comboPrice.config(values=self.price_Mufti)
+                self.comboPrice.current(0)
+
+            elif product == "spyker":
+               self.comboPrice.config(values=self.price_spyker)
+               self.comboPrice.current(0)
+ 
+     # T-Shirts
+            
+            elif product == "levis":
+                self.comboPrice.config(values=self.price_levis)
+                self.comboPrice.current(0)
+
+            elif product == "tommy":
+                self.comboPrice.config(values=self.price_tommy)
+                self.comboPrice.current(0)
+
+            elif product == "polo":
+                self.comboPrice.config(values=self.price_polo)
+                self.comboPrice.current(0)
+
+    # Shirt
+            elif product == "peter":
+                self.comboPrice.config(values=self.price_peter)
+                self.comboPrice.current(0)
+
+            elif product == "loius":
+                self.comboPrice.config(values=self.price_loius)
+                self.comboPrice.current(0)
+
+            elif product == "arrow":
+                self.comboPrice.config(values=self.price_arrow)
+                self.comboPrice.current(0)
+
+    # Jacket
+            elif product == "wildcraft":
+                self.comboPrice.config(values=self.price_wildcraft)
+                self.comboPrice.current(0)
+
+            elif product == "nike":
+                self.comboPrice.config(values=self.price_nike)
+                self.comboPrice.current(0)
+
+            elif product == "woodland":
+                self.comboPrice.config(values=self.price_woodland)
+                self.comboPrice.current(0)
+
+    # Bath Soap
+            elif product == "lux":
+                self.comboPrice.config(values=self.price_lux)
+                self.comboPrice.current(0)
+
+            elif product == "dove":
+                self.comboPrice.config(values=self.price_dove)
+                self.comboPrice.current(0)
+
+            elif product == "pears":
+                self.comboPrice.config(values=self.price_pears)
+                self.comboPrice.current(0)
+
+    # Face Cream
+            elif product == "ponds":
+                self.comboPrice.config(values=self.price_ponds)
+                self.comboPrice.current(0)
+
+            elif product == "nivya":
+                 self.comboPrice.config(values=self.price_nivya)
+                 self.comboPrice.current(0)
+
+            elif product == "himalya":
+                self.comboPrice.config(values=self.price_himalya)
+                self.comboPrice.current(0)
+
+    # Hair Oil
+            elif product == "parashut":
+                self.comboPrice.config(values=self.price_parashut)
+                self.comboPrice.current(0)
+        
+            elif product == "indulekha":
+                self.comboPrice.config(values=self.price_indulekha)
+                self.comboPrice.current(0)
+
+            elif product == "dabarambla":
+                self.comboPrice.config(values=self.price_dabarambla)
+                self.comboPrice.current(0)
+
+    # Conditioner
+            elif product == "Tresemme":
+                self.comboPrice.config(values=self.price_Tresemme)
+                self.comboPrice.current(0)
+
+    # iPhone
+            elif product == "Iphone_x":
+                self.comboPrice.config(values=self.price_Iphone_x)
+                self.comboPrice.current(0)
+
+            elif product == "Iphone_11":
+                self.comboPrice.config(values=self.price_Iphone_11)
+                self.comboPrice.current(0)
+
+            elif product == "Iphone_12":
+                self.comboPrice.config(values=self.price_Iphone_12)
+                self.comboPrice.current(0)
+
+    # Samsung
+            elif product == "samsung 16":
+                self.comboPrice.config(values=self.price_samsung16)
+                self.comboPrice.current(0)
+
+            elif product == "samsung 12":
+                self.comboPrice.config(values=self.price_samsung12)
+                self.comboPrice.current(0)
+
+            elif product == "samsung 21":
+                self.comboPrice.config(values=self.price_samsung21)
+                self.comboPrice.current(0)
+
+    # Motorola
+            # Motorola
+            elif product == "Moto G Power":
+                self.comboPrice.config(values=self.price_MotoGpower)
+                self.comboPrice.current(0)
+
+            elif product == "Moto Edge 40":
+                self.comboPrice.config(values=self.price_MotoEdge40)
+                self.comboPrice.current(0)
+
+            elif product == "Moto G60":
+                self.comboPrice.config(values=self.price_MotoG60)
+                self.comboPrice.current(0)
+
+            elif product == "Moto E13":
+                self.comboPrice.config(values=self.price_MotoE13)
+                self.comboPrice.current(0)
+
+
+           
+
+    # Realme
+            elif product == "Realme 12":
+                self.comboPrice.config(values=self.price_Realme12)
+                self.comboPrice.current(0)
+
+            elif product == "Realme 13":
+                self.comboPrice.config(values=self.price_Realme13)
+                self.comboPrice.current(0)
+
+            elif product == "Realme pro":
+                self.comboPrice.config(values=self.price_Realmepro)
+                self.comboPrice.current(0)
+    
+
+            
+
+if __name__ == "__main__":
+        root = Tk()
+        #app = LoginPage(root)
+        #root.mainloop() 
+        obj = Bill_App(root)
+        root.mainloop() 
+
